@@ -6,6 +6,7 @@ Handle cache
 import mistune
 import os
 from ..Cache import cache_img
+from urllib.parse import unquote
 
 
 class ImageRenderer(mistune.HTMLRenderer):
@@ -14,6 +15,7 @@ class ImageRenderer(mistune.HTMLRenderer):
 
     def image(self, src, alt="", title=None):
         # cache image, parse its width and height
+        src = unquote(src, 'utf-8')
         image_meta = cache_img(src, os.path.dirname(self.md_path))
         image_meta['title'] = title
         image_meta['alt'] = alt
